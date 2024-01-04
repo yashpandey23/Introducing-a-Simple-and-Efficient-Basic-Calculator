@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="calculator">
+        <div class="display">
+            <input type="text" placeholder="0" id="input" disabled />
+        </div>
+        <div class="buttons">
+            <!-- Full clearing -->
+            <input type="button" value="AC" id="clear" />
+            <!-- Clearing a single value -->
+            <input type="button" value="DEL" id="erase" />
+            <input type="button" value="/" class="input-button" />
+            <input type="button" value="*" class="input-button" />
+
+            <input type="button" value="7" class="input-button" />
+            <input type="button" value="8" class="input-button" />
+            <input type="button" value="9" class="input-button" />
+            <input type="button" value="-" class="input-button" />
+
+            <input type="button" value="6" class="input-button" />
+            <input type="button" value="5" class="input-button" />
+            <input type="button" value="4" class="input-button" />
+            <input type="button" value="+" class="input-button" />
+
+            <input type="button" value="1" class="input-button" />
+            <input type="button" value="2" class="input-button" />
+            <input type="button" value="3" class="input-button" />
+
+            <input type="button" value="=" id="equal" />
+            <input type="button" value="0" class="input-button" />
+            <input type="button" value="." class="input-button" />
+        </div>
+    </div>
+    <script>
+        let equal_pressed = 0;
+
+        //Refer all buttons excluding AC and DEL
+        let button_input = document.querySelectorAll(".input-button");
+
+        //Refer to input, equal, clear and erase
+        let input = document.getElementById("input");
+        let equal = document.getElementById("equal");
+        let clear = document.getElementById("clear");
+        let erase = document.getElementById("erase");
+
+        window.onload = () => {
+            input.value = "";
+        };
+
+        //Access each class using forEach function
+        button_input.forEach((button_class) => {
+            button_class.addEventListener("click", () => {
+                if(equal_pressed == 1){
+                    input.value = ""; 
+                    equal_pressed = 0;
+                }
+                //display value for each button
+                input.value += button_class.value;
+            });
+        });
+
+
+        //Solve the user's input when clicking the equal sign
+        equal.addEventListener("click", () => {
+            equal_pressed = 1;
+            let inp_val = input.value;
+            try{
+                //Evaluate the user's input
+                let solution = eval(inp_val);
+                //true for natural numbers
+                //false for decimals
+                if(Number.isInteger(solution)){
+                    input.value = solution;
+                }else{
+                    input.value = solution.toFixed(2);
+                }
+            }
+            catch(err){
+                //if user has entered invalid input
+                alert("Invalid Input!");
+            }
+        });
+        //Clear the whole input
+        clear.addEventListener("click", () => {
+            input.value = "";
+        });
+
+        //Erase a single value
+        erase.addEventListener("click", () => {
+            input.value = input.value.substr(0, input.value.length - 1);
+        });
+
+    </script>
+</body>
+</html>
